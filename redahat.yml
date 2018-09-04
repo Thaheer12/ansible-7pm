@@ -1,0 +1,26 @@
+---
+    - name: Installing git docker and apache server Redhat
+      yum:
+        name: "{{item}}" 
+        state: present
+      with_items:
+        - git
+        - httpd
+      when: ansible_os_family == "RedHat"
+ 
+    - name: Starting Apache Server on RedHat
+      service:
+        name: "{{item}}"
+        state: started
+      with_items:
+        - httpd
+      when: ansible_os_family == "RedHat"
+
+    - name: Coping index.html in Redhat
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+      when: ansible_os_family == "RedHat"
+      notify:
+        - Restarting Apache Server
+

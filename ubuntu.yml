@@ -1,0 +1,19 @@
+---
+    - name: Installing git docker and apache server Ubuntu
+      apt:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - git
+        - apache2
+      when: ansible_os_family == "Debian"
+    - name: Starting Apache Server on Ubuntu
+      service:
+        name: "{{item}}"
+        state: started
+      with_items:
+        - apache2
+      when: ansible_os_family == "Debian"
+    - git:
+        repo: 'https://github.com/devops-mptech/static_website.git'
+        dest: /var/www/html/

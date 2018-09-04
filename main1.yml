@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - include: redahat.yml
+    - include: debian.yml
+  handlers:
+    - name: restarting apache
+      service:
+        name: "{{item}}"
+        state: restarted
+      with_items:
+        - httpd
+        - apache2
